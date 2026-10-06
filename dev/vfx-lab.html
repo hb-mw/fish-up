@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <title>Fish Up — VFX lab (dev)</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="../styles/base.css">
+  <link rel="stylesheet" href="../styles/ui.css">
+  <script>
+    // default flags for the lab (kept if the URL already has some)
+    if (!location.search) history.replaceState(null, '', '?mode=play&nosave=1&off=ui,audio,fishing&time=12&freeze=1&spawn=clownfish:5,blue_tang:4,yellowtail_snapper:3');
+  </script>
+</head>
+<body>
+  <div id="stage">
+    <canvas id="scene"></canvas>
+    <canvas id="gl"></canvas>
+    <canvas id="overlay"></canvas>
+    <div id="ui"></div>
+  </div>
+  <script type="module" src="../src/main.js"></script>
+  <script type="module" src="vfx-lab.js"></script>
+</body>
+</html>

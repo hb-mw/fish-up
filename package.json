@@ -1,0 +1,15 @@
+{
+  "name": "fish-up",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Fish Up! - a fishing game with procedural graphics. Pure browser JS, no runtime dependencies.",
+  "type": "module",
+  "scripts": {
+    "start": "node tools/serve.mjs --open",
+    "serve": "node tools/serve.mjs",
+    "shot": "node tools/shot.mjs"
+  },
+  "devDependencies": {
+    "puppeteer-core": "^25.12.0"
+  }
+}

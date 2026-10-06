@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fish Up — audio lab (dev)</title>
+  <link rel="icon" href="data:,">
+  <style>
+    :root { --bg: #071422; --panel: #0d2135; --line: #1d3a57; --ink: #d8ecf8; --dim: #7f9bb3; --acc: #4fd1c5; --warn: #ffb35a; --bad: #ff6b6b; --good: #6be38a; }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; background: var(--bg); color: var(--ink); font: 13px/1.4 -apple-system, system-ui, sans-serif; }
+    header { position: sticky; top: 0; z-index: 2; display: flex; gap: 12px; align-items: center; padding: 10px 16px; background: #05101bee; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+    header h1 { font-size: 16px; margin: 0 8px 0 0; letter-spacing: .02em; }
+    main { padding: 12px 16px 40px; display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); }
+    section { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; }
+    section.wide { grid-column: 1 / -1; }
+    h2 { font-size: 12px; text-transform: uppercase; letter-spacing: .12em; color: var(--dim); margin: 2px 0 8px; }
+    button { background: #12304b; color: var(--ink); border: 1px solid #24527a; border-radius: 6px; padding: 5px 9px; margin: 2px; cursor: pointer; font: inherit; }
+    button:hover { background: #18405f; border-color: var(--acc); }
+    button.primary { background: #0f5a55; border-color: var(--acc); }
+    .grid { display: flex; flex-wrap: wrap; gap: 2px; }
+    .group { margin: 4px 0 8px; }
+    .group > div:first-child { color: var(--dim); font-size: 11px; margin: 2px 0; }
+    label.sl { display: grid; grid-template-columns: 92px 1fr 52px; gap: 8px; align-items: center; margin: 3px 0; }
+    label.sl span:last-child { text-align: right; font-variant-numeric: tabular-nums; color: var(--acc); }
+    input[type=range] { width: 100%; }
+    select { background: #12304b; color: var(--ink); border: 1px solid #24527a; border-radius: 6px; padding: 3px; }
+    pre { margin: 0; font: 11.5px/1.35 ui-monospace, Menlo, monospace; white-space: pre; overflow-x: auto; }
+    #status { color: var(--dim); font-variant-numeric: tabular-nums; }
+    .ok { color: var(--good); } .bad { color: var(--bad); } .warn { color: var(--warn); }
+    meter { width: 120px; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🔊 Fish Up — audio lab</h1>
+    <button id="start" class="primary">Start audio</button>
+    <label>master <input id="vol" type="range" min="0" max="1" step="0.01" value="0.8"></label>
+    <label><input id="mute" type="checkbox"> mute</label>
+    <label><input id="pause" type="checkbox"> paused</label>
+    <button id="run">Run offline report</button>
+    <span id="status">idle</span>
+  </header>
+  <main id="main"></main>
+  <script type="module" src="audio-lab.js"></script>
+</body>
+</html>

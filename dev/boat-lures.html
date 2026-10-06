@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Fish Up — lures (dev, boat art)</title>
+  <link rel="icon" href="data:,">
+  <style>html,body{margin:0;height:100%;background:#0b2a4a;overflow:hidden}canvas{display:block}</style>
+</head>
+<body>
+  <canvas id="c"></canvas>
+  <script type="module">
+    // Dev page: every lure drawn large (top) and at in-game size (bottom strip) via drawLure.
+    //   ?bg=water|deep|dark|light  &t=1.5 (freeze time)  &glow=0  &size=200  &angle=0.3  &moving=1
+    import { drawLure, drawLureGlow, LURE_SIZE } from '../src/render/boat/lures.js';
+    import { LURES } from '../src/data/lures.js';
+    const q = new URLSearchParams(location.search);
+    const bg = q.get('bg') || 'water';
+    const fixedT = q.get('t') !== null ? Number(q.get('t')) : null;
+    const glow = q.get('glow') !== '0';
+    const big = Number(q.get('size') || 0);
+    const angle = Number(q.get('angle') || 0);
+    const moving = Number(q.get('moving') || 1);
+    const BG = { water: ['#2ab0cc', '#0e5f9e'], deep: ['#06204a', '#01060f'], dark: ['#141c28', '#0a0f18'], light: ['#f2f6f8', '#dfe8ee'] }[bg] || ['#2ab0cc', '#0e5f9e'];
+    const canvas = document.getElementById('c');
+    const ctx = canvas.getContext('2d');
+    const dpr = window.devicePixelRatio || 1;
+    let W = 0, H = 0;
+    function resize() {
+      W = innerWidth; H = innerHeight;
+      canvas.width = W * dpr; canvas.height = H * dpr;
+      canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
+    }
+    addEventListener('resize', resize);
+    resize();
+    const t0 = performance.now();
+    function frame() {
+      requestAnimationFrame(frame);
+      const t = fixedT !== null ? fixedT : (performance.now() - t0) / 1000;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      const g = ctx.createLinearGradient(0, 0, 0, H);
+      g.addColorStop(0, BG[0]);
+      g.addColorStop(1, BG[1]);
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, W, H);
+      const cols = 3, rows = 3;
+      const stripH = 120;
+      const cw = W / cols, ch = (H - stripH) / rows;
+      const size = big || Math.min(cw * 0.78, ch * 1.3);
+      ctx.font = '14px ui-monospace, Menlo, monospace';
+      ctx.textAlign = 'center';
+      LURES.forEach((L, i) => {
+        const cx = (i % cols + 0.5) * cw, cy = (Math.floor(i / cols) + 0.5) * ch;
+        drawLure(ctx, L.id, cx, cy, size, angle, t);
+        if (glow) {
+          ctx.save();
+          ctx.globalCompositeOperation = 'lighter';
+          drawLureGlow(ctx, L.id, cx, cy, size, angle, t, moving);
+          ctx.restore();
+        }
+        ctx.fillStyle = bg === 'light' ? '#223' : 'rgba(255,255,255,0.8)';
+        ctx.fillText(`${i + 1} · ${L.name} (${L.id})`, cx, cy + ch * 0.42);
+      });
+      // in-game size strip
+      ctx.fillStyle = 'rgba(0,0,0,0.25)';
+      ctx.fillRect(0, H - stripH, W, stripH);
+      LURES.forEach((L, i) => {
+        const cx = ((i + 0.5) / LURES.length) * W, cy = H - stripH / 2;
+        const s = LURE_SIZE[L.id] || 30;
+        drawLure(ctx, L.id, cx, cy, s, angle - 0.4, t);
+        if (glow) {
+          ctx.save();
+          ctx.globalCompositeOperation = 'lighter';
+          drawLureGlow(ctx, L.id, cx, cy, s, angle - 0.4, t, moving);
+          ctx.restore();
+        }
+      });
+      document.documentElement.classList.add('ready');
+    }
+    frame();
+  </script>
+</body>
+</html>

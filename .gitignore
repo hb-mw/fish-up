@@ -1,0 +1,14 @@
+# dependencies (dev-only screenshot tooling)
+node_modules/
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+
+# logs & local scratch
+*.log
+npm-debug.log*
+.claude/

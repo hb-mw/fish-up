@@ -1,0 +1,52 @@
+/* Fish Up — page shell. KERNEL FILE. (All game UI styling lives in styles/ui.css.) */
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #020811;
+  overscroll-behavior: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* The stage is sized by the kernel (letterboxed for extreme aspect ratios).
+   --u is one logical pixel: calc(var(--u) * 24) is 24 px on a 1080p-tall stage. */
+#stage {
+  --u: 1px;
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: #06121f;
+  touch-action: none;
+}
+
+#stage > canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+#scene { z-index: 1; }
+#gl { z-index: 2; display: none; }
+#overlay { z-index: 3; cursor: crosshair; }
+
+/* DOM UI layer: click-through by default; interactive widgets opt in with pointer-events: auto. */
+#ui {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  overflow: hidden;
+}
